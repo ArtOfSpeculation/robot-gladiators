@@ -7,6 +7,8 @@ var enemyNames = ["Roborto", "Amy Andriod", "Robo Trumble"];
 var enemyHealth = 50;
 var enemyAttack = 12;
 
+console.log(enemyAttack);
+
 var fight = function (enemyName) {
     while (playerHealth > 0 && enemyHealth > 0) {
         // ask player if they'd like to fight or skip/quit
@@ -85,6 +87,19 @@ var startGame = function() {
     
             // pass the pickedEnemyName value as an argument into fight function
             fight(pickedEnemyName);
+
+            // check SHOP eligibility and option to SHOP
+            if(i < (enemyNames.length - 1) && playerHealth > 0){
+                // ask if player wishes to ENTER the SHOP before the next round
+                var storeConfirm = window.confirm("The fight is over, visit the store before the next round?")
+                
+                //if yes ENTER SHOP i.e., shop()
+                if(storeConfirm) {
+                    shop();
+                }
+            }
+
+
         } else {
             window.alert("You have lost your robot in battle! Game over!");
             break;
@@ -97,7 +112,7 @@ var startGame = function() {
 // function to end the entire game
 var endGame = function() {
     // if the player is still alive, they win.
-    window.alert("The game has now MediaElementAudioSourceNode. Let's see how you did!");
+    window.alert("The game has now ended. Let's see how you did!");
     if(playerHealth > 0) {
         window.alert("Great job, you've survived the game! You now have a score of " + playerMoney + ".");        
     } else {
@@ -111,8 +126,56 @@ var endGame = function() {
     } else {
         window.alert("Thanks for playing Robot Gladiators! Come back soon.");
     }
-}
+};
 
+// The SHOP
+// SHOP eligibility i.e., the player is alive or has money, is NOT checked in the SHOP; be sure to check eligibilty BEFORE SENDING to SHOP
+var shop = function () {
+    // ask the player what they would like to do
+    var shopOptionPrompt = window.prompt(
+        "Would you like to REFILL you health, UPGRADE your attack or LEAVE the store?  Please enter on: 'REFILL', 'UPGRADE' or 'LEAVE' to make a choice."
+    );
+    switch(shopOptionPrompt) {
+        case "refill":
+        case "REFILL":
+        case "Refill":
+            if(playerMoney >= 7){
+                window.alert("Refilling player's health by 20 for 7 dollars.");
+    
+                // increase health and decrease money
+                playerMoney -= 7;
+                playerHealth += 20;
+            }else{
+                window.alert("You don't have enough money.");
+                shop();
+            }
+            break;
+        case "upgrade":
+        case "Upgrade":
+        case "UPGRADE":
+            if(playerMoney >= 7){
+                window.alert("Upgrading player's attack by 6 for 7 dollars.");
+        
+                // increase attack and decrease money
+                playerMoney -= 7;
+                playerAttack += 6;
+            }else{
+                window.alert("You don't have enough money.");
+                shop();
+            }
+            break;
+        case "leave":
+        case "Leave":
+        case "LEAVE":
+            
+            // do nothing, END function
+            break;
+        default:
+            window.alert("You did not pick a valid option. Try again.");
+            shop();
+            break;
+    }
+};
 
 // start a game when the page loads
 startGame();
